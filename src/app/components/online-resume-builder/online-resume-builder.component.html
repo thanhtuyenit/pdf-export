@@ -1,0 +1,455 @@
+<nav
+  class="navbar navbar-expand navbar-light bg-primary d-flex justify-content-between"
+>
+  <div class="navbar-brand mb-0 h1 text-white">Curriculum Vitae</div>
+</nav>
+<div class="container-fluid">
+  <form [formGroup]="resumeSubmitForm">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Profile -->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i aria-hidden="true" class="material-icons"> account_circle </i>
+              Personal Detail
+            </h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input
+                    id="name"
+                    name="name"
+                    placeholder="Name"
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    [ngClass]="{
+                      'is-invalid':
+                        f.name.errors &&
+                        (isSubmitted || f.name.dirty || f.name.touched)
+                    }"
+                    maxlength="100"
+                  />
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <textarea
+                      id="address"
+                      name="address"
+                      placeholder="Address"
+                      type="text"
+                      class="form-control"
+                      formControlName="address"
+                      rows="3"
+                      [ngClass]="{
+                        'is-invalid':
+                          f.address.errors &&
+                          (isSubmitted || f.address.dirty || f.address.touched)
+                      }"
+                    >
+                    </textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <input
+                    id="contactNumber"
+                    name="contactNumber"
+                    placeholder="Contact Number"
+                    type="text"
+                    class="form-control"
+                    formControlName="contactNumber"
+                    [ngClass]="{
+                      'is-invalid':
+                        f.contactNumber.errors &&
+                        (isSubmitted ||
+                          f.contactNumber.dirty ||
+                          f.contactNumber.touched)
+                    }"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    class="form-control"
+                    formControlName="email"
+                    [ngClass]="{
+                      'is-invalid':
+                        f.email.errors &&
+                        (isSubmitted || f.email.dirty || f.email.touched)
+                    }"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    id="socialProfile"
+                    name="socialProfile"
+                    placeholder="Github/Linkedin"
+                    type="text"
+                    class="form-control"
+                    formControlName="socialProfile"
+                    [ngClass]="{
+                      'is-invalid':
+                        f.socialProfile.errors &&
+                        (isSubmitted ||
+                          f.socialProfile.dirty ||
+                          f.socialProfile.touched)
+                    }"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between card-title">
+              <h4 class="d-flex align-items-center">
+                <i aria-hidden="true" class="material-icons"> timeline </i>
+                Skills
+              </h4>
+              <button class="btn btn-primary" (click)="addSkill()">+</button>
+            </div>
+            <div class="row" formArrayName="skills">
+              <div
+                class="col-md-4"
+                *ngFor="let skill of skillList.controls; let i = index"
+              >
+                <div class="form-group" [formGroupName]="i">
+                  <div class="input-group mb-3">
+                    <input
+                      id="skillName"
+                      name="skillName"
+                      type="text"
+                      class="form-control"
+                      formControlName="skillName"
+                      placeholder="e.g. Java / Angular / .Net "
+                      [ngClass]="{
+                        'is-invalid':
+                          skill.get('skillName').errors &&
+                          (isSubmitted ||
+                            skill.get('skillName').dirty ||
+                            skill.get('skillName').touched)
+                      }"
+                    />
+                    <div
+                      class="input-group-append"
+                      *ngIf="skillList.controls.length > 1"
+                    >
+                      <i
+                        class="btn btn-outline-secondary far fa-trash-alt"
+                        aria-hidden="true"
+                        (click)="removeSkill(i)"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div class="shadow-sm card" formArrayName="experiences">
+          <div class="card-body">
+            <div class="d-flex justify-content-between card-title">
+              <h4 class="d-flex align-items-center">
+                <i aria-hidden="true" class="material-icons"> timeline </i>
+                Experience
+              </h4>
+              <button class="btn btn-primary" (click)="addExperience()">
+                +
+              </button>
+            </div>
+            <div
+              class="row"
+              *ngFor="let ex of experienceList.controls; let i = index"
+            >
+              <div class="col-md-6" [formGroupName]="i">
+                <div class="form-group">
+                  <input
+                    id="employer"
+                    name="employer"
+                    type="text"
+                    class="form-control"
+                    formControlName="employer"
+                    placeholder="Employer"
+                    [ngClass]="{
+                      'is-invalid':
+                        ex.get('employer').errors &&
+                        (isSubmitted ||
+                          ex.get('employer').dirty ||
+                          ex.get('employer').touched)
+                    }"
+                  />
+                </div>
+                <div class="form-group">
+                  <div class="form-group">
+                    <textarea
+                      id="jobDescription"
+                      name="jobDescription"
+                      type="text"
+                      class="form-control"
+                      formControlName="jobDescription"
+                      rows="3"
+                      placeholder="Job Description"
+                      [ngClass]="{
+                        'is-invalid':
+                          ex.get('jobDescription').errors &&
+                          (isSubmitted ||
+                            ex.get('jobDescription').dirty ||
+                            ex.get('jobDescription').touched)
+                      }"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6" [formGroupName]="i">
+                <div class="form-group">
+                  <input
+                    id="jobTitle"
+                    name="jobTitle"
+                    type="text"
+                    class="form-control"
+                    formControlName="jobTitle"
+                    placeholder="Job Title"
+                    [ngClass]="{
+                      'is-invalid':
+                        ex.get('jobTitle').errors &&
+                        (isSubmitted ||
+                          ex.get('jobTitle').dirty ||
+                          ex.get('jobTitle').touched)
+                    }"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    id="experienceYear"
+                    name="experienceYear"
+                    type="number"
+                    class="form-control"
+                    formControlName="experienceYear"
+                    placeholder="Number of Experience"
+                    min="1"
+                    [ngClass]="{
+                      'is-invalid':
+                        ex.get('experienceYear').errors &&
+                        (isSubmitted ||
+                          ex.get('experienceYear').dirty ||
+                          ex.get('experienceYear').touched)
+                    }"
+                  />
+                </div>
+                <div
+                  class="form-group"
+                  *ngIf="experienceList.controls.length > 1"
+                >
+                  <i
+                    type="button"
+                    class="btn btn-outline-secondary far fa-trash-alt"
+                    aria-hidden="true"
+                    (click)="removeExperience(i)"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="shadow-sm card" formArrayName="educations">
+          <div class="card-body">
+            <div class="d-flex justify-content-between card-title">
+              <h4 class="d-flex align-items-center">
+                <i aria-hidden="true" class="material-icons"> school </i>
+                Education
+              </h4>
+              <button class="btn btn-primary" (click)="addEducation()">
+                +
+              </button>
+            </div>
+            <div
+              class="row"
+              *ngFor="let ed of educationList.controls; let i = index"
+            >
+              <div class="col-md-3" [formGroupName]="i">
+                <div class="form-group">
+                  <select
+                    id="degree"
+                    name="degree"
+                    class="form-control"
+                    formControlName="degree"
+                    placeholder="Degree"
+                  >
+                    <option value="" selected disabled>Select degree</option>
+                    <option [value]="d" *ngFor="let d of degrees">
+                      {{ d }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3" [formGroupName]="i">
+                <div class="form-group">
+                  <input
+                    id="college"
+                    name="college"
+                    type="text"
+                    class="form-control"
+                    formControlName="college"
+                    placeholder="School/College"
+                    [ngClass]="{
+                      'is-invalid':
+                        ed.get('college').errors &&
+                        (isSubmitted ||
+                          ed.get('college').dirty ||
+                          ed.get('college').touched)
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3" [formGroupName]="i">
+                <div class="form-group">
+                  <input
+                    id="passingYear"
+                    name="passingYear"
+                    type="number"
+                    class="form-control"
+                    formControlName="passingYear"
+                    placeholder="Passing Year"
+                    [ngClass]="{
+                      'is-invalid':
+                        ed.get('passingYear').errors &&
+                        (isSubmitted ||
+                          ed.get('passingYear').dirty ||
+                          ed.get('passingYear').touched)
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3" [formGroupName]="i">
+                <div class="form-group">
+                  <input
+                    id="percentage"
+                    name="percentage"
+                    type="number"
+                    class="form-control"
+                    formControlName="percentage"
+                    placeholder="Percentage"
+                    [ngClass]="{
+                      'is-invalid':
+                        ed.get('percentage').errors &&
+                        (isSubmitted ||
+                          ed.get('percentage').dirty ||
+                          ed.get('percentage').touched)
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div
+                  class="form-group"
+                  *ngIf="educationList.controls.length > 1"
+                >
+                  <i
+                    type="button"
+                    class="btn btn-outline-secondary far fa-trash-alt"
+                    aria-hidden="true"
+                    (click)="removeEducation(i)"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other Details -->
+        <div class="shadow-sm card">
+          <div class="card-body">
+            <h4 class="card-title d-flex align-items-center">
+              <i aria-hidden="true" class="material-icons"> list </i>Other
+              Details
+            </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <textarea
+                    id="otherDetails"
+                    name="otherDetails"
+                    type="text"
+                    class="form-control"
+                    formControlName="otherDetails"
+                    rows="4"
+                    placeholder="Other Details"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          <div class="card-body">
+            <div class="row">
+              <!-- Action -->
+              <div class="col-md-3">
+                <div class="shadow-sm card action-buttons">
+                  <button
+                    (click)="generatePdf('open')"
+                    class="btn btn-primary d-flex align-items-center justify-content-center"
+                  >
+                    <i aria-hidden="true" class="material-icons">
+                      picture_as_pdf
+                    </i>
+                    <span>Open</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="shadow-sm card action-buttons">
+                  <button
+                    (click)="generatePdf('download')"
+                    class="btn btn-info d-flex align-items-center justify-content-center"
+                  >
+                    <i aria-hidden="true" class="material-icons">
+                      cloud_download </i
+                    ><span>Download</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="shadow-sm card action-buttons">
+                  <button
+                    (click)="generatePdf('print')"
+                    class="btn btn-warning d-flex align-items-center justify-content-center"
+                  >
+                    <i aria-hidden="true" class="material-icons"> print </i
+                    ><span>Print</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="shadow-sm card action-buttons">
+                  <button
+                    type="reset"
+                    (click)="resetForm()"
+                    class="btn btn-danger d-flex align-items-center justify-content-center"
+                  >
+                    <i aria-hidden="true" class="material-icons"> clear </i
+                    ><span>Reset</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
